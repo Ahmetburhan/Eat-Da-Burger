@@ -15,7 +15,7 @@ var PORT = process.env.PORT || 3000;
 
 // express middleware needed for serving static files. For more details
 // see here: http://expressjs.com/en/starter/static-files.html
-app.use(express.static(__dirname + '/app/public'));
+app.use(express.static(__dirname + '/public'));
 
 /// bodyparsers 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -24,17 +24,17 @@ app.use(bodyParser.json({ type: 'application/*+json' }));
 app.use(bodyParser.raw({ type: 'application/vnd.custom-type' }));
 app.use(bodyParser.text({ type: 'text/html' }));
 
+// override with POST having ?_method=DELETE or PUT
+app.use(methodOverride('_method'));
+
 // Set Handlebars as the default templating engine.
+var exphbs = require('express-handlebars');
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-// database connection moved to config/connection.js
-
-// more to come
-
-
-
-
+// now import the routes
+var routes = require('./controllers/burgers_controller.js');
+app.use('/', routes);
 
 // Initiate the listener.
 app.listen(PORT, function() {
