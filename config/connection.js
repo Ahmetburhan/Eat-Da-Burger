@@ -2,6 +2,7 @@
 var mysql = require('mysql');
 var connection;
 
+// add in the environment variable option for JAWSDB for heroku
 if (process.env.JAWSDB_URL) {
 	connection = mysql.createConnection(process.env.JAWSDB_URL);
 } else {
@@ -32,4 +33,5 @@ connection.connect(function(err) {
 	console.log('connected as id ' + connection.threadId);
 });
 
+// export the connection back to orm
 module.exports = connection;
